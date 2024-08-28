@@ -1,9 +1,8 @@
 <?php
 
-use App\Http\Controllers\Belajar;
-use App\Http\Controllers\FormController;
+use App\Http\Controllers\ContactBelajar;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Testing\Concerns\TestDatabases;
 
 /*
 |--------------------------------------------------------------------------
@@ -11,8 +10,8 @@ use Illuminate\Testing\Concerns\TestDatabases;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
 |
 */
 
@@ -20,22 +19,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Belajar Routing
-route::get('/geprek', function () {
-    return "Sambel Gowang";
-});
-route::get('/geprek/{name}', function ($name) {
-    return "Sambel Gowang $name";
-});
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Routing file Belajar.php
-
-route::get('/form', [Belajar::class, 'view']);
-
-// Routing Form
-
-route::get('/input-form', function(){
-    return view('formindex');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-route::get('/test-db', [FormController::class, 'testDatabase']);
+require __DIR__.'/auth.php';
+
+// buat contact us ahlan
+
+Route::get('/contact-ahlan', [ContactBelajar::class, 'contact']);
