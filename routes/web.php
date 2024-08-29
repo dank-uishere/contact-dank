@@ -33,4 +33,4 @@ require __DIR__.'/auth.php';
 
 // buat contact us ahlan
 
-Route::get('/contact-ahlan', [ContactBelajar::class, 'contact']);
+Route::get('/test', [ContactBelajar::class, 'contact']);
